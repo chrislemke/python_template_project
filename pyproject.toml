@@ -6,8 +6,8 @@ authors = ["Christopher Lemke <chris@syhbl.mozmail.com>"]
 readme = "docs/README.md"
 license = "MIT"
 repository = "https://github.com/chrislemke/python_template_project"
-documentation = ""
-packages = [{include = ""}]
+documentation = "https://chrislemke.github.io/python_template_project"
+packages = [{ include = "python_template_project", from = "src" }]
 
 classifiers = [
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
@@ -20,26 +20,51 @@ keywords = [
     "data science"
 ]
 
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
-
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"
 
-[tool.poetry.group.dev.dependencies]
-black = {extras = ["jupyter"], version = "^22.10.0"}
-isort = "^5.10.1"
-mkdocs = "1.4.2"
-mkdocstrings = "0.18.1"
-mkdocs-material = "8.5.8"
-mypy = "^0.990"
-pre-commit = "^2.20.0"
-pylint = "^2.15.5"
+
+[tool.poetry.group.test.dependencies]
 pytest = "^7.2.0"
+pytest-cov = "4.0.0"
+
+[tool.poetry.group.dev.dependencies]
+black = {extras = ["jupyter"], version = "^22.12.0"}
+bandit = "^1.7.4"
+isort = "^5.11.4"
+mypy = "^0.991"
+pylint = "^2.15.9"
+pre-commit = "^2.20.0"
+nbstripout = "^0.6.1"
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "1.4.2"
+mkdocstrings = {extras = ["python"], version = "0.19.1"}
+mkdocs-material = "8.5.11"
+
+[tool.poetry.group.dev]
+optional = false
+
+[tool.poetry.group.test]
+optional = true
+
+[tool.poetry.group.docs]
+optional = true
+
+[build-system]
+requires = ["poetry-core>=1.4.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests"
+]
 
 [tool.pylint.messages_control]
 disable = []
+
+[tool.pylint.format]
+max-line-length = 88
 
 [tool.mypy]
 strict = true
@@ -47,10 +72,15 @@ disallow_subclassing_any = false
 ignore_missing_imports = true
 disallow_any_generics = false
 warn_return_any = false
-exclude = ["tests/*", "docs/*"]
+no_namespace_packages = true
+exclude = ["tests", "docs"]
 
-[tool.pylint.format]
-max-line-length = 88
+[tool.black]
+target-version = ['py311']
+
 
 [tool.isort]
 profile = "black"
+skip_glob = ["docs/*"]
+src_paths = ["src/python_template_project", "tests"]
+extend_skip = [".md", ".yaml", ".yml"]

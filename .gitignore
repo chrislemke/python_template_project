@@ -134,4 +134,7 @@ venv.bak/
 .dmypy.json
 dmypy.json
 
+# Mac
+.DS_Store
+
 # Custom
